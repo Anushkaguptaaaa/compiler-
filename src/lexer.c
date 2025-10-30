@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include "../include/lexer.h"
 
-// Initialize lexer with input string
 Lexer* lexer_init(char *input) {
     Lexer *lexer = (Lexer*)malloc(sizeof(Lexer));
     if (!lexer) {
@@ -17,23 +16,20 @@ Lexer* lexer_init(char *input) {
     lexer->read_position = 0;
     lexer->current_char = '\0';
     
-    // Read the first character
     lexer_read_char(lexer);
     
     return lexer;
 }
 
-// Free lexer resources
 void lexer_free(Lexer *lexer) {
     if (lexer) {
         free(lexer);
     }
 }
 
-// Read the next character
 void lexer_read_char(Lexer *lexer) {
     if (lexer->read_position >= (int)strlen(lexer->input)) {
-        lexer->current_char = '\0'; // EOF
+        lexer->current_char = '\0';
     } else {
         lexer->current_char = lexer->input[lexer->read_position];
     }
@@ -42,24 +38,20 @@ void lexer_read_char(Lexer *lexer) {
     lexer->read_position++;
 }
 
-// Skip whitespace characters
 void lexer_skip_whitespace(Lexer *lexer) {
     while (isspace(lexer->current_char)) {
         lexer_read_char(lexer);
     }
 }
 
-// Check if the character is a letter
 int is_letter(char ch) {
     return isalpha(ch) || ch == '_';
 }
 
-// Check if the character is a digit
 int is_digit(char ch) {
     return isdigit(ch);
 }
 
-// Read an identifier
 void read_identifier(Lexer *lexer, Token *token) {
     int start_pos = lexer->position;
     while (is_letter(lexer->current_char)) {
@@ -72,7 +64,6 @@ void read_identifier(Lexer *lexer, Token *token) {
     token->type = TOKEN_ID;
 }
 
-// Read a number
 void read_number(Lexer *lexer, Token *token) {
     int start_pos = lexer->position;
     while (is_digit(lexer->current_char)) {
@@ -85,7 +76,6 @@ void read_number(Lexer *lexer, Token *token) {
     token->type = TOKEN_NUM;
 }
 
-// Get the next token from the input
 Token lexer_next_token(Lexer *lexer) {
     Token token;
     memset(token.lexeme, 0, sizeof(token.lexeme));

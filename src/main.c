@@ -52,13 +52,9 @@ void perform_syntax_analysis(char *input) {
 void perform_code_generation(char *input) {
     printf("\n===== Code Generation =====\n");
     
-    // This is a simplified version that uses the parser's output
-    // In a real compiler, you would integrate the parser and code generator more tightly
-    
     Lexer *lexer = lexer_init(input);
     Parser *parser = parser_init(lexer);
     
-    // The parser will print the three-address code directly
     parser_parse(parser);
     
     parser_free(parser);
@@ -76,13 +72,10 @@ int main() {
         return 1;
     }
     
-    // Remove trailing newline
     input[strcspn(input, "\n")] = '\0';
     
-    // Seed random number generator for temp variable names
     srand(time(NULL));
     
-    // Perform all phases of compilation
     perform_lexical_analysis(input);
     perform_syntax_analysis(input);
     perform_code_generation(input);
